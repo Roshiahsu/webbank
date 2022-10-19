@@ -24,45 +24,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 public class Knife4jConfiguration {
 
     /**
-     * 【重要】指定Controller包路径
+     * 【重要】指定Controller包路徑
      */
     private String basePackage = "cn.tedu.webbank.controller";
-    /**
-     * 分组名称
-     */
-    private String groupName = "product";
-    /**
-     * 主机名
-     */
-    private String host = "http://java.tedu.cn";
-    /**
-     * 标题
-     */
-    private String title = "酷鲨商城在线API文档--商品管理";
-    /**
-     * 简介
-     */
-    private String description = "酷鲨商城在线API文档--商品管理";
-    /**
-     * 服务条款URL
-     */
-    private String termsOfServiceUrl = "http://www.apache.org/licenses/LICENSE-2.0";
-    /**
-     * 联系人
-     */
-    private String contactName = "Java教学研发部";
-    /**
-     * 联系网址
-     */
-    private String contactUrl = "http://java.tedu.cn";
-    /**
-     * 联系邮箱
-     */
-    private String contactEmail = "java@tedu.cn";
-    /**
-     * 版本号
-     */
-    private String version = "1.0.0";
 
     @Autowired
     private OpenApiExtensionResolver openApiExtensionResolver;
@@ -71,8 +35,6 @@ public class Knife4jConfiguration {
     public Docket docket() {
         String groupName = "1.0.0";
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
-                .host(host)
-                .apiInfo(apiInfo())
                 .groupName(groupName)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(basePackage))
@@ -82,14 +44,6 @@ public class Knife4jConfiguration {
         return docket;
     }
 
-    private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title(title)
-                .description(description)
-                .termsOfServiceUrl(termsOfServiceUrl)
-                .contact(new Contact(contactName, contactUrl, contactEmail))
-                .version(version)
-                .build();
-    }
+
 
 }
