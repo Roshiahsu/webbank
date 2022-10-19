@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tedu.webbank.mapper.UserMapper">
+
+    <!--int insert(User user);-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into
+           user_info(username, password, identity_number, balance, login_time,logout_time)
+        values
+            (#{username},#{password},#{identityNumber},#{balance},#{loginTime},#{logoutTime})
+    </insert>
+
+    <!--int countByUsername(String username);-->
+    <select id="countByUsername" resultType="int">
+        select
+            count(*)
+        from
+            user_info
+        where
+            username = #{username}
+    </select>
+</mapper>
