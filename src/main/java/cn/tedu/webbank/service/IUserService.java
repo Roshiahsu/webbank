@@ -1,6 +1,7 @@
 package cn.tedu.webbank.service;
 
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
+import cn.tedu.webbank.pojo.dto.UserLoginDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -15,5 +16,7 @@ public interface IUserService {
 
     @Transactional
     void insert(UserAddNewDTO userAddNewDTO);
+
+    String login(UserLoginDTO userLoginDTO);
 
 }

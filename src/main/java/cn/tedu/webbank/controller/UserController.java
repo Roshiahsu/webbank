@@ -1,6 +1,7 @@
 package cn.tedu.webbank.controller;
 
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
+import cn.tedu.webbank.pojo.dto.UserLoginDTO;
 import cn.tedu.webbank.service.IUserService;
 import cn.tedu.webbank.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -35,6 +36,15 @@ public class UserController {
         log.debug("開始新增用戶");
         userService.insert(userAddNewDTO);
         return JsonResult.ok();
+    }
+
+    @PostMapping("/login")
+    @ApiOperation(value = "2.使用者登入")
+    @ApiOperationSupport(order = 200)
+    public JsonResult login(@RequestBody UserLoginDTO userLoginDTO){
+        log.debug("開始用戶登入業務");
+        String jwt = userService.login(userLoginDTO);
+        return JsonResult.ok(jwt);
     }
 
 }

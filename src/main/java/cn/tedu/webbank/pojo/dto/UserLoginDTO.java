@@ -1,19 +1,17 @@
 package cn.tedu.webbank.pojo.dto;
 
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
 
 /**
- * @ClassName UserAddNewDTO
+ * @ClassName UserLoginDTO
  * @Version 1.0
  * @Description TODO
- * @Date 2022/10/20、上午1:24
+ * @Date 2022/10/20、下午7:21
  */
 @Data
-public class UserAddNewDTO implements Serializable {
-
+public class UserLoginDTO implements Serializable {
     /**
      * 用戶名稱
      */
@@ -26,6 +24,4 @@ public class UserAddNewDTO implements Serializable {
      * 身分證號，登入帳號
      */
     private String identityNumber;
-
-
 }

@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 /**
  * @ClassName Knife4jConfiguration
  * @Version 1.0
- * @Description TODO
+ * @Description Knife4j相關設定
  * @Date 2022/10/19、下午11:35
  */
 @Configuration

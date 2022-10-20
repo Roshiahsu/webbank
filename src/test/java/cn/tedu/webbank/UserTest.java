@@ -1,7 +1,9 @@
 package cn.tedu.webbank;
 
 import cn.tedu.webbank.mapper.UserMapper;
+import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
 import cn.tedu.webbank.pojo.entity.User;
+import cn.tedu.webbank.pojo.vo.UserLoginVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,17 @@ public class UserTest {
     }
     @Test
     public void countByUsernameTest(){
-        int count = userMapper.countByUsername("tom");
+        UserAddNewDTO userAddNewDTO = new UserAddNewDTO();
+        userAddNewDTO.setUsername("tom");
+        userAddNewDTO.setIdentityNumber("a123142124");
+        int count = userMapper.countByUserAddNewDTO(userAddNewDTO);
         log.debug("查詢到使用者>>>{}",count);
+    }
+
+    @Test
+    public void getByUsernameTest(){
+        UserLoginVO vo = userMapper.getByUsername("tom");
+
+        log.debug("獲取到的使用者資料>>>{}",vo);
     }
 }

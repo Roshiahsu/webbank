@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @ClassName MyBatisConfiguration
  * @Version 1.0
- * @Description TODO
+ * @Description mybatis相關設定
  * @Date 2022/10/20、上午2:25
  */
 @Configuration

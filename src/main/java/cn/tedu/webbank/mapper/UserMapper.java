@@ -2,6 +2,7 @@ package cn.tedu.webbank.mapper;
 
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
 import cn.tedu.webbank.pojo.entity.User;
+import cn.tedu.webbank.pojo.vo.UserLoginVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +22,21 @@ public interface UserMapper {
     int insert(User user);
 
     /**
-     * 使用用戶名統計數量
+     * 使用UserAddNewDTO統計數量
+     * @param userAddNewDTO
+     * @return
+     */
+    int countByUserAddNewDTO(UserAddNewDTO userAddNewDTO);
+
+    /**
+     * 使用用戶名查詢用戶資料
+     * @param username
+     * @return
+     */
+    UserLoginVO getByUsername(String username);
+
+    /**
+     * 根據用戶名統計數量
      * @param username
      * @return
      */
