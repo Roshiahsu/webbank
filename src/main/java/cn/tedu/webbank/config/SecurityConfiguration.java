@@ -1,5 +1,6 @@
 package cn.tedu.webbank.config;
 
+import cn.tedu.webbank.filter.JwtAuthorizationFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @ClassName SecurityConfiguration
@@ -19,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @Slf4j
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -33,14 +38,28 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //禁用防止跨域訪問
         http.csrf().disable();
 
         http.cors();
 
-        String urls = "";
+        String[] urls = {
+                "/doc.html",
+                "/**/*.css",
+                "/**/*.js",
+                "/swagger-resources",
+                "/v2/api-docs",
+                "/users/login",
+                "/users/addNew"
+        };
 
         http.authorizeRequests()
-                .antMatchers("/**")
-                .permitAll();
+                .antMatchers(urls)
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+
+
+        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
