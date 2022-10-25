@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.cors();
-
+        //放行白名單
         String[] urls = {
                 "/doc.html",
                 "/**/*.css",
@@ -53,11 +53,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/users/addNew"
         };
 
-        http.authorizeRequests()
-                .antMatchers(urls)
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+        http.authorizeRequests()//請求授權
+                .antMatchers(urls)//符合的條件
+                .permitAll()//允許放行
+                .anyRequest()//除上述配置以外的其他請求
+                .authenticated();//通過認證：已經登入過才能訪問
 
 
         http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
