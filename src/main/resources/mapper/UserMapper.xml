@@ -12,6 +12,56 @@
             (#{username},#{password},#{identityNumber},#{balance},#{enable})
     </insert>
 
+    <!--int insertLoginLog(LoginLog loginLog);-->
+    <insert id="insertLoginLog" useGeneratedKeys="true" keyProperty="id">
+        insert into
+           login_log_info(user_id, login_time, logout_time)
+        values
+            (#{userId},#{loginTime},#{logoutTime})
+    </insert>
+
+    <!--int update(User user);-->
+    <update id="update">
+        update
+            user_info
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="identityNumber != null">
+                identity_number = #{identityNumber},
+            </if>
+            <if test="balance != null">
+                balance = #{balance},
+            </if>
+        </set>
+        where
+            id = #{id};
+    </update>
+
+    <!-- User getByID(Long id);-->
+    <select id="getByID" resultMap="getByIDResult">
+        select
+            user_info.id,
+            user_info.username,
+            user_info.identity_number,
+            user_info.balance
+        from
+             user_info
+        where
+            id = #{id};
+    </select>
+    <resultMap id="getByIDResult" type="cn.tedu.webbank.pojo.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="identity_number" property="identityNumber"/>
+        <result column="balance" property="balance"/>
+    </resultMap>
+
+
     <!--int countByUserAddNewDTO(UserAddNewDTO userAddNewDTO);-->
     <select id="countByUserAddNewDTO" resultType="int">
         select

@@ -4,9 +4,10 @@ import cn.tedu.webbank.exception.ServiceException;
 import cn.tedu.webbank.mapper.UserMapper;
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
 import cn.tedu.webbank.pojo.dto.UserLoginDTO;
+import cn.tedu.webbank.pojo.entity.LoginLog;
 import cn.tedu.webbank.pojo.entity.User;
-import cn.tedu.webbank.pojo.vo.UserLoginVO;
 import cn.tedu.webbank.security.AdminDetails;
+import cn.tedu.webbank.security.LoginPrinciple;
 import cn.tedu.webbank.service.IUserService;
 import cn.tedu.webbank.util.JwtUtils;
 import cn.tedu.webbank.web.ServiceCode;
@@ -21,7 +22,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.rmi.server.ServerCloneException;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +50,6 @@ public class UserServiceImpl implements IUserService {
     public void insert(UserAddNewDTO userAddNewDTO) {
         log.debug("開始insert使用者");
 
-        //改名
         int count = userMapper.countByUserAddNewDTO(userAddNewDTO);
         if(count>0){
             String message = "用戶名或身份證號已註冊";
@@ -94,6 +94,9 @@ public class UserServiceImpl implements IUserService {
         //獲取username
         String username = adminDetails.getUsername();
         log.debug("獲取的用戶名>>>{}",username);
+        //獲取的identityNumber
+        String identityNumber = adminDetails.getIdentityNumber();
+        log.debug("獲取的身分證>>>{}",identityNumber);
 
         //將權限轉換成JSON類型
         String authoritiesString = JSON.toJSONString(authorities);
@@ -103,7 +106,98 @@ public class UserServiceImpl implements IUserService {
         claims.put("username",username);
         claims.put("id",id);
         claims.put("authorities",authoritiesString);
+        claims.put("identityNumber",identityNumber);
+
+        //插入用戶登入時間
+        LocalDateTime currentTime = LocalDateTime.now();
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUserId(id);
+        loginLog.setLoginTime(currentTime);
+        int row = userMapper.insertLoginLog(loginLog);
+        if(row !=1){
+            String message ="伺服器忙碌中請稍候";
+            log.debug("資料更新錯誤!!");
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+
 
         return JwtUtils.generate(claims);
+    }
+
+    @Override
+    public User deposit(Long money, LoginPrinciple loginPrinciple) {
+        log.debug("存款金額>>>{},用戶列表>>>{}",money,loginPrinciple);
+        //獲取用戶id
+        Long id = loginPrinciple.getId();
+        //根據id獲取到的用戶訊息
+        User user = userMapper.getByID(id);
+        Long balance = user.getBalance();
+        log.debug("用戶詳情>>>{}",user);
+
+        balance = balance +money;
+        user.setBalance(balance);
+
+        int row = userMapper.update(user);
+        log.debug("受影響行數>>>{}",row);
+        if(row !=1){
+            String message ="伺服器忙碌中請稍候";
+            log.debug("資料更新錯誤!!");
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        return user;
+    }
+
+    @Override
+    public User cashOut(Long money, LoginPrinciple loginPrinciple) {
+        log.debug("領錢金額>>>{},用戶列表>>>{}",money,loginPrinciple);
+        //獲取用戶id
+        Long id = loginPrinciple.getId();
+        //根據id獲取到的用戶訊息
+        User user = userMapper.getByID(id);
+        Long balance = user.getBalance();
+        log.debug("用戶詳情>>>{}",user);
+
+        if(balance<money){
+            String message = "餘額不足";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        balance = balance - money;
+        user.setBalance(balance);
+
+        int row = userMapper.update(user);
+        log.debug("受影響行數>>>{}",row);
+        if(row !=1){
+            String message ="伺服器忙碌中請稍候";
+            log.debug("資料更新錯誤!!");
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
+        return user;
+    }
+
+    @Override
+    public User balanceCheck(LoginPrinciple loginPrinciple) {
+        Long id = loginPrinciple.getId();
+        User user = userMapper.getByID(id);
+
+        return user;
+    }
+
+    @Override
+    public void passwordUpdate(String password, LoginPrinciple loginPrinciple) {
+        log.debug("開始更新密碼");
+        Long id = loginPrinciple.getId();
+        User user = userMapper.getByID(id);
+
+        String encode = passwordEncoder.encode(password);
+
+        user.setPassword(encode);
+
+        int row = userMapper.update(user);
+        if(row !=1){
+            String message ="伺服器忙碌中請稍候";
+            log.debug("資料更新錯誤!!");
+            throw new ServiceException(ServiceCode.ERR_UPDATE,message);
+        }
     }
 }

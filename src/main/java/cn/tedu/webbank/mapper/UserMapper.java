@@ -1,6 +1,7 @@
 package cn.tedu.webbank.mapper;
 
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
+import cn.tedu.webbank.pojo.entity.LoginLog;
 import cn.tedu.webbank.pojo.entity.User;
 import cn.tedu.webbank.pojo.vo.UserLoginVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,6 +23,27 @@ public interface UserMapper {
     int insert(User user);
 
     /**
+     * 插入使用者登入或登出時間
+     * @param loginLog
+     * @return
+     */
+    int insertLoginLog(LoginLog loginLog);
+
+    /**
+     * 用戶存錢
+     * @param user 用戶詳情
+     * @return
+     */
+    int update(User user);
+
+    /**
+     * 使用id獲取用戶訊息
+     * @param id 用戶id
+     * @return
+     */
+    User getByID(Long id);
+
+    /**
      * 使用UserAddNewDTO統計數量
      * @param userAddNewDTO
      * @return
@@ -41,4 +63,5 @@ public interface UserMapper {
      * @return
      */
     int countByUsername(String username);
+
 }

@@ -45,6 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     userLogin.getIdentityNumber(),
                     userLogin.getUsername(),
                     userLogin.getPassword(),
+                    userLogin.getEnable()==1,
                     authorities
             );
             log.debug("userDetails:{}",adminDetails);
