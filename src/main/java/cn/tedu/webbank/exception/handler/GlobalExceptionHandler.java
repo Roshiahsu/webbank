@@ -4,6 +4,7 @@ import cn.tedu.webbank.exception.ServiceException;
 import cn.tedu.webbank.web.JsonResult;
 import cn.tedu.webbank.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -47,6 +48,13 @@ public class GlobalExceptionHandler {
             stringJoiner.add(defaultMessage);
         }
         return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST,stringJoiner.toString());
+    }
 
+    @ExceptionHandler
+    public JsonResult handleBadCredentials(BadCredentialsException e) {
+        log.error("統一處理憑證錯誤得異常【{}】，將向客戶端響應：{}", e.getClass().getName(), e.getMessage());
+        e.printStackTrace();
+        String message = "帳號或密碼錯誤，請重新登入！";
+        return JsonResult.fail(ServiceCode.ERR_JWT_INVALID, message);
     }
 }
