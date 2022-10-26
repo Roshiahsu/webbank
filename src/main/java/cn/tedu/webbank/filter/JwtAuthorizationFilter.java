@@ -78,6 +78,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             log.debug("解析JWT失敗，錯誤詳情:{},{}",e.getClass().getName(),e.getMessage());
             String errorMessage= "登入失敗，獲取登入訊息失敗!!";
             jwtExceptionResponse(response,ServiceCode.ERR_JWT_INVALID, errorMessage);
+            e.printStackTrace();
             return;
         }
         //獲取用戶訊息

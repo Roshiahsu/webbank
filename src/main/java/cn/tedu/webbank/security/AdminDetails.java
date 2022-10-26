@@ -30,8 +30,9 @@ public class AdminDetails extends User {
             String identityNumber,
             String username,
             String password,
+            Boolean enable,
             Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, true, true, true, true, authorities);
+        super(username, password,enable , true, true, true, authorities);
         this.id= id;
         this.identityNumber=identityNumber;
     }
