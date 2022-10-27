@@ -42,13 +42,23 @@ public class User implements Serializable {
     /**
      * 登入時間
      */
+    @ApiModelProperty(value = "登入時間")
     private LocalDateTime loginTime;
     /**
      * 登出時間
      */
+    @ApiModelProperty(value = "登出時間")
     private LocalDateTime logoutTime;
-
+    /**
+     * 帳號是否啟用
+     */
     @ApiModelProperty(value = "帳號是否啟用")
     private Integer enable;
+
+    /**
+     * 用戶身份id
+     */
+    @ApiModelProperty(value = "身份ID")
+    private Integer roleId;
 
 }

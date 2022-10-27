@@ -2,6 +2,8 @@ package cn.tedu.webbank.mapper;
 
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
 import cn.tedu.webbank.pojo.entity.LoginLog;
+import cn.tedu.webbank.pojo.entity.Role;
+import cn.tedu.webbank.pojo.entity.Transaction;
 import cn.tedu.webbank.pojo.entity.User;
 import cn.tedu.webbank.pojo.vo.UserLoginVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,6 +30,20 @@ public interface UserMapper {
      * @return
      */
     int insertLoginLog(LoginLog loginLog);
+
+    /**
+     * 插入交易資料表
+     * @param transaction
+     * @return
+     */
+    int insertTransactionInfo(Transaction transaction);
+
+    /**
+     * 添加用戶身份
+     * @param role 資料詳情
+     * @return
+     */
+    int insertUserRole(Role role);
 
     /**
      * 用戶存錢
