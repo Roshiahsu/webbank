@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -31,6 +32,7 @@ public class UserAddNewDTO implements Serializable {
      * 身分證號，登入帳號
      */
     @ApiModelProperty("身分證號，登入帳號")
+    @Pattern(regexp = "[A-Za-z][12]\\d{8}")
     private String identityNumber;
 
 

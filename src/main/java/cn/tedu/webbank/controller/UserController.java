@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * @ClassName UserController
  * @Version 1.0
@@ -37,7 +39,7 @@ public class UserController {
     @PostMapping("/addNew")
     @ApiOperation(value = "1.使用者註冊")
     @ApiOperationSupport(order = 100)
-    public JsonResult addNew(@RequestBody UserAddNewDTO userAddNewDTO){
+    public JsonResult addNew(@RequestBody @Valid UserAddNewDTO userAddNewDTO){
         log.debug("開始新增用戶");
         userService.insert(userAddNewDTO);
         return JsonResult.ok();
