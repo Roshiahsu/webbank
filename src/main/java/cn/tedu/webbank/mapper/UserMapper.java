@@ -6,8 +6,11 @@ import cn.tedu.webbank.pojo.entity.Role;
 import cn.tedu.webbank.pojo.entity.Transaction;
 import cn.tedu.webbank.pojo.entity.User;
 import cn.tedu.webbank.pojo.vo.UserLoginVO;
+import cn.tedu.webbank.pojo.vo.UserTransactionInfoVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @ClassName UserMapper
@@ -58,6 +61,13 @@ public interface UserMapper {
      * @return
      */
     User getByID(Long id);
+
+    /**
+     * 使用id獲取交易列表
+     * @param userId 用戶id
+     * @return
+     */
+    List<UserTransactionInfoVO> listTransactionInfoById(Long userId);
 
     /**
      * 使用UserAddNewDTO統計數量

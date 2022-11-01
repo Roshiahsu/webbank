@@ -8,6 +8,7 @@ import cn.tedu.webbank.pojo.entity.LoginLog;
 import cn.tedu.webbank.pojo.entity.Role;
 import cn.tedu.webbank.pojo.entity.Transaction;
 import cn.tedu.webbank.pojo.entity.User;
+import cn.tedu.webbank.pojo.vo.UserTransactionInfoVO;
 import cn.tedu.webbank.security.AdminDetails;
 import cn.tedu.webbank.security.LoginPrinciple;
 import cn.tedu.webbank.service.IUserService;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -157,21 +159,13 @@ public class UserServiceImpl implements IUserService {
         {
             Transaction transaction = new Transaction(id, "1", money, LocalDateTime.now());
             int row = userMapper.insertTransactionInfo(transaction);
-            if (row != 1) {
-                String message = "伺服器忙碌中請稍候";
-                log.debug("資料更新錯誤!!");
-                throw new ServiceException(ServiceCode.ERR_UPDATE, message);
-            }
+            updateError(row);
         }
 
         /*更新用戶資料*/
         int row = userMapper.update(user);
         log.debug("受影響行數>>>{}", row);
-        if (row != 1) {
-            String message = "伺服器忙碌中請稍候";
-            log.debug("資料更新錯誤!!");
-            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
-        }
+        updateError(row);
         return user;
     }
 
@@ -197,29 +191,33 @@ public class UserServiceImpl implements IUserService {
         {
             Transaction transaction = new Transaction(id, "2", money, LocalDateTime.now());
             int row = userMapper.insertTransactionInfo(transaction);
-            if (row != 1) {
-                String message = "伺服器忙碌中請稍候";
-                log.debug("資料更新錯誤!!");
-                throw new ServiceException(ServiceCode.ERR_UPDATE, message);
-            }
+            updateError(row);
         }
         /*更新用戶資料*/
         int row = userMapper.update(user);
         log.debug("受影響行數>>>{}", row);
+        updateError(row);
+        return user;
+    }
+
+    /**
+     * 如果Update回傳結果不是1則拋異常
+     * @param row
+     */
+    public void updateError(int row){
         if (row != 1) {
             String message = "伺服器忙碌中請稍候";
             log.debug("資料更新錯誤!!");
             throw new ServiceException(ServiceCode.ERR_UPDATE, message);
         }
-        return user;
     }
 
     @Override
-    public User balanceCheck(LoginPrinciple loginPrinciple) {
+    public List<UserTransactionInfoVO> transactionInfo(LoginPrinciple loginPrinciple) {
         Long id = loginPrinciple.getId();
-        User user = userMapper.getByID(id);
+        List<UserTransactionInfoVO> transactionInfo = userMapper.listTransactionInfoById(id);
 
-        return user;
+        return transactionInfo;
     }
 
     @Override

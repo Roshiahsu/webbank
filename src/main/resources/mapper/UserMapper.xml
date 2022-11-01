@@ -23,7 +23,7 @@
     <!--int insertTransactionInfo(Transaction transaction);-->
     <insert id="insertTransactionInfo" useGeneratedKeys="true" keyProperty="id">
         insert into
-            transaction(user_id,trans_type_id,trade,trans_date)
+            transaction_info_log(user_id,trans_type_id,trade,trans_date)
         values
             (#{userId},#{transTypeId},#{trade},#{transDate})
     </insert>
@@ -76,6 +76,32 @@
         <result column="username" property="username"/>
         <result column="identity_number" property="identityNumber"/>
         <result column="balance" property="balance"/>
+    </resultMap>
+
+    <!--List<UserTransactionInfoVO> listTransactionInfoById(Long userId);-->
+    <select id="listTransactionInfoById" resultMap="listTransactionInfoByIdResult">
+        select
+            transaction_info_log.id,
+            transaction_info_log.user_id,
+            transaction_info_log.trans_type_id,
+            transaction_info_log.trade,
+            transaction_info_log.trans_date,
+            trans_type.type_name,
+            user_info.username
+        from
+             transaction_info_log
+        left join trans_type on transaction_info_log.trans_type_id = trans_type.id
+        left join user_info on transaction_info_log.user_id = user_info.id
+        where
+            user_id = #{userId};
+    </select>
+    <resultMap id="listTransactionInfoByIdResult" type="cn.tedu.webbank.pojo.vo.UserTransactionInfoVO">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="trans_type_id" property="transTypeId"/>
+        <result column="trade" property="trade"/>
+        <result column="trans_date" property="transDate"/>
+        <result column="type_name" property="typeName"/>
     </resultMap>
 
     <!--int countByUserAddNewDTO(UserAddNewDTO userAddNewDTO);-->

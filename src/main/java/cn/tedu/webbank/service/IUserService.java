@@ -3,8 +3,11 @@ package cn.tedu.webbank.service;
 import cn.tedu.webbank.pojo.dto.UserAddNewDTO;
 import cn.tedu.webbank.pojo.dto.UserLoginDTO;
 import cn.tedu.webbank.pojo.entity.User;
+import cn.tedu.webbank.pojo.vo.UserTransactionInfoVO;
 import cn.tedu.webbank.security.LoginPrinciple;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @ClassName IUserService
@@ -46,11 +49,11 @@ public interface IUserService {
     User cashOut(Long money, LoginPrinciple loginPrinciple);
 
     /**
-     * 餘額查詢
+     * 查詢交易紀錄
      * @param loginPrinciple
      * @return
      */
-    User balanceCheck(LoginPrinciple loginPrinciple);
+    List<UserTransactionInfoVO> transactionInfo(LoginPrinciple loginPrinciple);
 
     void passwordUpdate(String password,LoginPrinciple loginPrinciple);
 }

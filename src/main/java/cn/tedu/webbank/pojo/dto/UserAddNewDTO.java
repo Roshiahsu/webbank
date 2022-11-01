@@ -32,7 +32,7 @@ public class UserAddNewDTO implements Serializable {
      * 身分證號，登入帳號
      */
     @ApiModelProperty("身分證號，登入帳號")
-    @Pattern(regexp = "[A-Za-z][12]\\d{8}")
+    @Pattern(regexp = "[A-Za-z][12]\\d{8}",message = "請輸入正確身分證號")
     private String identityNumber;
 
 

@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     public JsonResult handlerBindException(BindException e){
         log.debug("綁定異常處理");
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        StringJoiner  stringJoiner= new StringJoiner(";", "異常", "！！！");
+        StringJoiner  stringJoiner= new StringJoiner(";");
         for (FieldError fieldError : fieldErrors) {
             String defaultMessage = fieldError.getDefaultMessage();
             stringJoiner.add(defaultMessage);
